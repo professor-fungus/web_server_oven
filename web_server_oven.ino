@@ -10,7 +10,6 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h> 
 #include <ESP8266WebServer.h>
-#include <SPI.h>
 
 //WIfi AP name and password
 const char* ssid = "THERMOLYNE";
@@ -19,24 +18,18 @@ const int thermoMISO = 12;
 const int thermoCS = 15;
 const int thermoCLK = 14;
 
-String form =                                             // String form to sent to the client-browser
-  "<p>"
-  "<center>"
-  "<h1>Who DaMan? Portal</h1>"
-  "<br>"
-  "<br>"
-  "<h1>Type something nice...</h1>"
-  "<br>"
-  "<form action='msg'><p><input type='text' name='msg' size=20 autofocus> <input type='submit' value='Submit'></form>"
-  "</center>";
-
 MAX6675 thermocouple;
+
+String temperature;
+
+String form;
 
 // Create an instance of the server and specify the port to listen on as an argument
 //WiFiServer server(80);
 ESP8266WebServer server(80);          // String form to sent to the client-browser
 
 void setup() {
+  
   thermocouple.begin(thermoCLK, thermoCS, thermoMISO);
   delay(1000);
   /*WiFi.softAP(ssid, password); // remove the password parameter if you want the AP to be open.
@@ -72,10 +65,28 @@ void setup() {
 
   server.on("/msg", handle_msg);                          // And as regular external functions:
   server.begin();                                         // Start the server
+  Serial.println("Ready!");
+
 }
 
 void loop() {
   server.handleClient();
+  temperature = thermocouple.readFahrenheit();
+  form =                                             // String form to sent to the client-browser
+  "<p>"
+  "<center>"
+  "<h1>THERMOLYNE EGG FRYER</h1>"
+  "<br>"
+  "<h1>CURRENT FAHRENHEITS:</h1>";
+  form += "<h1>";
+  form += temperature;
+  form += "</h1>";
+  form += "<br>"
+  "<h1>How many Fahrenheits would you like to have?</h1>"
+  "<br>"
+  "<form action='msg'><p><input type='text' name='msg' size=20 autofocus> <input type='submit' value='Submit'></form>"
+  "</center>";
+  delay(1000);
   /*
   // Check if a client has connected
   WiFiClient client = server.available();
@@ -157,10 +168,5 @@ void handle_msg()
   Serial.println(decodedMsg);                             // print original string to monitor
   Serial.println(""); 
   
-  //display.clearDisplay();                                 // Clear OLED Display
-  //display.setCursor(0,0);                                 // Set Cursor to 0,0 Position
-  //display.println(decodedMsg);                            // Display Message
-  //display.display();
-  
-  unsigned int lengte = decodedMsg.length();              // length of received message
+  unsigned int msg_length = decodedMsg.length();              // length of received message
 }
