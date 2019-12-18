@@ -3,7 +3,6 @@
   based on https://www.youtube.com/watch?v=V8INmMY8GF8
   Consider https://randomnerdtutorials.com/esp32-esp8266-plot-chart-web-server/ for charts
   Pulled text handling from: https://www.youtube.com/watch?v=z16gdSpAut8  
-  THIS IS CURRENTLY BROKEN!
   */
 #include "max6675.h"
 #include <SPI.h>
@@ -11,22 +10,27 @@
 #include <WiFiClient.h> 
 #include <ESP8266WebServer.h>
 
+//void update_form(double temperature);
+
 //WIfi AP name and password
 const char* ssid = "THERMOLYNE";
 const char* password = "12345678";
 const int thermoMISO = 12;
 const int thermoCS = 15;
 const int thermoCLK = 14;
+int iter_count; //tracks the number of executions for the main loop; this way we update the "form" only on occasion
 
 MAX6675 thermocouple;
 
-String temperature;
+//double temperature;
 
 String form;
 
 // Create an instance of the server and specify the port to listen on as an argument
 //WiFiServer server(80);
 ESP8266WebServer server(80);          // String form to sent to the client-browser
+
+
 
 void setup() {
   
@@ -70,8 +74,18 @@ void setup() {
 }
 
 void loop() {
+  
   server.handleClient();
-  temperature = thermocouple.readFahrenheit();
+  //temperature = thermocouple.readFahrenheit();
+
+  if(iter_count < 500){
+    iter_count++;
+  }else{
+    update_form(thermocouple.readFahrenheit());
+    iter_count = 0;
+  }
+  
+  /*
   form =                                             // String form to sent to the client-browser
   "<p>"
   "<center>"
@@ -86,7 +100,8 @@ void loop() {
   "<br>"
   "<form action='msg'><p><input type='text' name='msg' size=20 autofocus> <input type='submit' value='Submit'></form>"
   "</center>";
-  delay(1000);
+  delay(500);
+  */
   /*
   // Check if a client has connected
   WiFiClient client = server.available();
@@ -131,6 +146,7 @@ void loop() {
   // when the function returns and 'client' object is detroyed
 */
 }
+
 void handle_msg() 
 {
 
@@ -169,4 +185,22 @@ void handle_msg()
   Serial.println(""); 
   
   unsigned int msg_length = decodedMsg.length();              // length of received message
+}
+
+void update_form(double temperature)
+{
+  form =                                             // String form to sent to the client-browser
+  "<p>"
+  "<center>"
+  "<h1>THERMOLYNE EGG FRYER</h1>"
+  "<br>"
+  "<h1>CURRENT FAHRENHEITS:</h1>";
+  form += "<h1>";
+  form += temperature;
+  form += "</h1>";
+  form += "<br>"
+  "<h1>How many Fahrenheits would you like to have?</h1>"
+  "<br>"
+  "<form action='msg'><p><input type='text' name='msg' size=20 autofocus> <input type='submit' value='Submit'></form>"
+  "</center>";
 }
