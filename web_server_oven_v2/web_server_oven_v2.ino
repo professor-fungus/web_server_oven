@@ -47,6 +47,11 @@ const char *password = APPSK;
 const int thermoMISO = 12;
 const int thermoCS = 15;
 const int thermoCLK = 14;
+unsigned long interval = 1000;
+unsigned long prev_millis = 0;
+double hysteresis = 3.0;
+bool hot = false;
+double temp_reading = 10000;
 
 MAX6675 thermocouple;
 
@@ -76,9 +81,17 @@ void setup() {
   server.on("/", handleRoot);
   server.begin();
   Serial.println("HTTP server started");
+  pinMode(LED_BUILTIN, OUTPUT);
 }
 
 void loop() {
+  unsigned long curr_millis = millis();
+  
+  if((unsigned long)(curr_millis - prev_millis) >= interval){
+    handle_heater();
+    prev_millis = millis();
+    //Serial.println(temp_reading);
+  }
   server.handleClient();
 }
 
@@ -86,6 +99,36 @@ String get_form()
 {
   String first = "<center><h1>THERMOLYNE EGG FRYER</h1><br><h2>Current temperature (F):</h2>";
   String second = "<br><h2>Requested temperature (F):</h2>";
-  String third = "<br><form action='msg'><p><input type='text' name='msg' size=20 autofocus> <input type='submit' value='Submit'></form></center>";
+  //String third = "<br><form action='msg'><p><input type='text' name='msg' size=20 autofocus> <input type='submit' value='Submit'></form></center>";
+  String third = "<br><form action='/'><p><input type='text' name='msg' size=20 autofocus> <input type='submit' value='Submit'></form></center>";
   return first + thermocouple.readFahrenheit() + second + server.arg("msg") + third;
+}
+
+double handle_heater()
+{
+  /*
+  String temp = server.arg("msg");
+  if(temp.toDouble() > thermocouple.readFahrenheit()) {
+    digitalWrite(LED_BUILTIN, LOW);
+  }else{
+    digitalWrite(LED_BUILTIN, HIGH);
+  }
+  */
+  String temp_string = server.arg("msg");
+  double temp_setP = temp_string.toDouble(); //The setpoint entered on the server
+  temp_reading = thermocouple.readFahrenheit(); //The reading from the MAX6675
+  
+  if(temp_setP > temp_reading && !hot) {
+    digitalWrite(LED_BUILTIN, LOW);
+  }else if(temp_setP < temp_reading){
+    hot = true;
+    digitalWrite(LED_BUILTIN, HIGH);
+    Serial.println("Coasting!");
+    Serial.println(temp_reading);
+  }else if((temp_setP-hysteresis) > temp_reading && hot){
+    hot = false;
+    Serial.println("Heating!");
+    Serial.println(temp_reading);
+  }
+  //return temp_reading;
 }
