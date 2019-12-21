@@ -52,6 +52,7 @@ unsigned long prev_millis = 0;
 double hysteresis = 3.0;
 bool hot = false;
 double temp_reading = 10000;
+int ssr = 5;
 
 MAX6675 thermocouple;
 
@@ -82,6 +83,7 @@ void setup() {
   server.begin();
   Serial.println("HTTP server started");
   pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(ssr, OUTPUT);
 }
 
 void loop() {
@@ -90,7 +92,7 @@ void loop() {
   if((unsigned long)(curr_millis - prev_millis) >= interval){
     handle_heater();
     prev_millis = millis();
-    //Serial.println(temp_reading);
+    Serial.println(temp_reading);
   }
   server.handleClient();
 }
@@ -120,15 +122,17 @@ double handle_heater()
   
   if(temp_setP > temp_reading && !hot) {
     digitalWrite(LED_BUILTIN, LOW);
+    digitalWrite(ssr, HIGH);
   }else if(temp_setP < temp_reading){
     hot = true;
     digitalWrite(LED_BUILTIN, HIGH);
+    digitalWrite(ssr, LOW);
     Serial.println("Coasting!");
-    Serial.println(temp_reading);
+    //Serial.println(temp_reading);
   }else if((temp_setP-hysteresis) > temp_reading && hot){
     hot = false;
     Serial.println("Heating!");
-    Serial.println(temp_reading);
+    //Serial.println(temp_reading);
   }
   //return temp_reading;
 }
