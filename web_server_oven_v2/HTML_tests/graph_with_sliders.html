@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="graphing.css">
 
 <svg version="1.2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="graph" aria-labelledby="title" role="img">
-  <title id="title">A line chart showing some information</title>
+  <title id="title">THERMOLYNE Control</title>
   
 <g class="grid x-grid" id="xGrid">
   <line x1="90" x2="90" y1="5" y2="371"></line>
@@ -18,29 +18,48 @@
 </g>
 
 <g class="labels x-labels">
-  <text x="100" y="400">0</text>
-  <text x="216" y="400">100</text>
-  <text x="332" y="400">200</text>
-  <text x="448" y="400">300</text>
-  <text x="564" y="400">400</text>
-  <text x="684" y="400">500</text>
+  <text x="90" y="400">0</text>
+  <text x="216" y="400" id="tI_3"></text><!This consumes the variable, so it cannot be displayed in the below function apparently>
+  <text x="332" y="400" id="tI_7"></text>
+  <text x="448" y="400" id="tI_10"></text>
+  <text x="564" y="400" id="tI_13"></text>
+  <text x="684" y="400" id="tI_16"></text>
   <text x="400" y="440" class="label-title">Time(minutes)</text>
 </g>
+
 <g class="labels y-labels">
   <text x="80" y="15">1875</text>
   <text x="80" y="131">1250</text>
   <text x="80" y="248">625</text>
-  <text x="80" y="373">0</text>
+  <text x="80" y="373">32</text>
   <text x="-150" y="50" transform="rotate(-90)" class="label-title">Temp (*F)</text>
 </g>
-<g class="data" data-setname="Our first data set">
-  <circle cx="90" cy="192" data-value="7.2" r="4"></circle>
-  <circle cx="240" cy="141" data-value="8.1" r="4"></circle>
-  <circle cx="388" cy="179" data-value="7.7" r="4"></circle>
-  <circle cx="531" cy="200" data-value="6.8" r="4"></circle>
-  <circle cx="677" cy="104" data-value="6.7" r="4"></circle>
+
+<g class="data">
+  <circle id="sp1_c" cx="90" cy="370" data-value="7.2" r="4"></circle>
+  <circle id="sp2_c" cx="130" cy="370" data-value="8.1" r="4"></circle>
+  <circle id="sp3_c" cx="169" cy="370" data-value="8.1" r="4"></circle>
+  <circle id="sp4_c" cx="209" cy="370" data-value="8.1" r="4"></circle>
+  <circle id="sp5_c" cx="248" cy="370" data-value="8.1" r="4"></circle>
+  <circle id="sp6_c" cx="288" cy="370" data-value="8.1" r="4"></circle>
+  <circle id="sp7_c" cx="328" cy="370" data-value="8.1" r="4"></circle>
+  <circle id="sp8_c" cx="367" cy="370" data-value="8.1" r="4"></circle>
+  <circle id="sp9_c" cx="407" cy="370" data-value="8.1" r="4"></circle>
+  <circle id="sp10_c" cx="446" cy="370" data-value="8.1" r="4"></circle>
+  <circle id="sp11_c" cx="486" cy="370" data-value="8.1" r="4"></circle>
+  <circle id="sp12_c" cx="526" cy="370" data-value="8.1" r="4"></circle>
+  <circle id="sp13_c" cx="565" cy="370" data-value="8.1" r="4"></circle>
+  <circle id="sp14_c" cx="605" cy="370" data-value="8.1" r="4"></circle>
+  <circle id="sp15_c" cx="644" cy="370" data-value="8.1" r="4"></circle>
+  <circle id="sp16_c" cx="684" cy="370" data-value="8.1" r="4"></circle>
 </g>
 
+<!--
+<!circle class="data" name="sp2_c" cx="0" cy="0" r="4"><!/circle>
+<svg width="50px">
+  <circle class="data" cx="50" cy="100" id="sp1_c" r="4"></circle>
+</svg>
+-->
 <!--
 <svg viewBox="-60 0 500 100" class="chart">
   <polyline
@@ -82,48 +101,395 @@
     
 
 <div id="T1_slider" style = "float: left; width: 6.25%;">
-<input style="width:20px; height:300px" type="range" orient="vertical" id="temp_sP_1" min="32" max="1875" value="32">
+  <center><p>RAMP<br>01</p></center>
+  <input type="text" id="time_1" value="10" style="width:50%">
+  <input style="width:20px; height:300px" type="range" orient="vertical" id="temp_sP_1" min="32" max="1875" value="32">
 
-<button onclick="myFunction_1()">T1</button>
+  <button onclick="myFunction_1()" style="width:80%">T1</button>
 
-<p id="sP_1"></p>
+  <p id="sP_1"></p>
+  <p id="tI_1"></p>
+  <!p id="y_1_axis"><!/p>
+  <!p id="circ_1_x_pos"><!/p>
 
-<script>
-function myFunction_1() {
-  var x_1 = document.getElementById("temp_sP_1").value;
-  document.getElementById("sP_1").innerHTML = x_1;
-}
-</script>
+  <script>
+    function myFunction_1() {
+	var x_1 = document.getElementById("temp_sP_1").value;
+	var y_1_disp = ~~(370 - (x_1 / 5.05));
+	var y_1 = document.getElementById("time_1").value;
+	document.getElementById("sP_1").innerHTML = x_1;
+	document.getElementById("tI_1").innerHTML = y_1;
+	//document.getElementById("y_1_axis").innerHTML = y_1_disp;
+	var c1_pos = document.getElementById("sp1_c");
+	//c1_pos.setAttribute('cx', 90);
+	c1_pos.setAttribute('cy', y_1_disp);
+	//c1_pos.style.position = "absolute";
+  }
+  </script>
 </div>
 
 <div id="T2_slider" style = "float: left; width: 6.25%;">
-<input style="width:20px; height:300px" type="range" orient="vertical" id="temp_sP_2" min="32" max="1875" value="32">
+  <center><p>RAMP<br>02</p></center>
+  <input type="text" id="time_2" value="20" style="width:50%">
+  <input style="width:20px; height:300px" type="range" orient="vertical" id="temp_sP_2" min="32" max="1875" value="32">
 
-<button onclick="myFunction_2()">T2</button>
+  <button onclick="myFunction_2()" style="width:80%">T2</button>
 
-<p id="sP_2"></p>
+  <p id="sP_2"></p>
+  <p id="tI_2"></p>
+  <!p id="y_2_axis"><!/p>
 
-<script>
-function myFunction_2() {
-  var x_2 = document.getElementById("temp_sP_2").value;
-  document.getElementById("sP_2").innerHTML = x_2;
-}
-</script>
+  <script>
+  function myFunction_2() {
+      var x_2 = document.getElementById("temp_sP_2").value;
+      var y_2_disp = ~~(370 - (x_2 / 5.05));
+      var y_2 = document.getElementById("time_2").value;
+      document.getElementById("sP_2").innerHTML = x_2;
+      document.getElementById("tI_2").innerHTML = y_2;
+      //document.getElementById("y_2_axis").innerHTML = y_2_disp;
+      var c2_pos = document.getElementById("sp2_c");
+      //c2_pos.setAttribute('cx', 90);
+      c2_pos.setAttribute('cy', y_2_disp);
+  }
+  </script>
 </div>
 
 <div id="T3_slider" style = "float: left; width: 6.25%;">
-<input style="width:20px; height:300px" type="range" orient="vertical" id="temp_sP_3" min="32" max="1875" value="32">
+  <center><p>RAMP<br>03</p></center>
+  <input type="text" id="time_3" value="30" style="width:50%">
+  <input style="width:20px; height:300px" type="range" orient="vertical" id="temp_sP_3" min="32" max="1875" value="32">
 
-<button onclick="myFunction_3()">T3</button>
+  <button onclick="myFunction_3()" style="width:80%">T3</button>
 
-<p id="sP_3"></p>
+  <p id="sP_3"></p>
+  <p id="tI_3"></p>
+  <!p id="y_3_axis"><!/p>
 
-<script>
-function myFunction_3() {
-  var x_3 = document.getElementById("temp_sP_3").value;
-  document.getElementById("sP_3").innerHTML = x_3;
-}
-</script>
+  <script>
+  function myFunction_3() {
+      var x_3 = document.getElementById("temp_sP_3").value;
+      var y_3_disp = ~~(370 - (x_3 / 5.05));
+      var y_3 = document.getElementById("time_3").value;
+      document.getElementById("sP_3").innerHTML = x_3;
+      document.getElementById("tI_3").innerHTML = y_3;
+      //document.getElementById("y_3_axis").innerHTML = y_3_disp;
+      var c3_pos = document.getElementById("sp3_c");
+      //c3_pos.setAttribute('cx', 90);
+      c3_pos.setAttribute('cy', y_3_disp);
+  }
+  </script>
+</div>
+
+<div id="T4_slider" style = "float: left; width: 6.25%;">
+  <center><p>RAMP<br>04</p></center>
+  <input type="text" id="time_4" value="40" style="width:50%">
+  <input style="width:20px; height:300px" type="range" orient="vertical" id="temp_sP_4" min="32" max="1875" value="32">
+
+  <button onclick="myFunction_4()" style="width:80%">T4</button>
+
+  <p id="sP_4"></p>
+  <p id="tI_4"></p>
+
+  <script>
+  function myFunction_4() {
+      var x_4 = document.getElementById("temp_sP_4").value;
+      var y_4_disp = ~~(370 - (x_4 / 5.05));
+      var y_4 = document.getElementById("time_4").value;
+      document.getElementById("sP_4").innerHTML = x_4;
+      document.getElementById("tI_4").innerHTML = y_4;
+      var c4_pos = document.getElementById("sp4_c");
+      //c4_pos.setAttribute('cx', 90);
+      c4_pos.setAttribute('cy', y_4_disp);
+  }
+  </script>
+</div>
+
+<div id="T5_slider" style = "float: left; width: 6.25%;">
+  <center><p>RAMP<br>05</p></center>
+  <input type="text" id="time_5" value="50" style="width:50%">
+  <input style="width:20px; height:300px" type="range" orient="vertical" id="temp_sP_5" min="32" max="1875" value="32">
+
+  <button onclick="myFunction_5()" style="width:80%">T5</button>
+
+  <p id="sP_5"></p>
+  <p id="tI_5"></p>
+
+  <script>
+  function myFunction_5() {
+      var x_5 = document.getElementById("temp_sP_5").value;
+      var y_5_disp = ~~(370 - (x_5 / 5.05));
+      var y_5 = document.getElementById("time_5").value;
+      document.getElementById("sP_5").innerHTML = x_5;
+      document.getElementById("tI_5").innerHTML = y_5;
+      var c5_pos = document.getElementById("sp5_c");
+      //c5_pos.setAttribute('cx', 90);
+      c5_pos.setAttribute('cy', y_5_disp);
+  }
+  </script>
+</div>
+
+<div id="T6_slider" style = "float: left; width: 6.25%;">
+  <center><p>RAMP<br>06</p></center>
+  <input type="text" id="time_6" value="60" style="width:50%">
+  <input style="width:20px; height:300px" type="range" orient="vertical" id="temp_sP_6" min="32" max="1875" value="32">
+
+  <button onclick="myFunction_6()" style="width:80%">T6</button>
+
+  <p id="sP_6"></p>
+  <p id="tI_6"></p>
+
+  <script>
+  function myFunction_6() {
+      var x_6 = document.getElementById("temp_sP_6").value;
+      var y_6_disp = ~~(370 - (x_6 / 5.05));
+      var y_6 = document.getElementById("time_6").value;
+      document.getElementById("sP_6").innerHTML = x_6;
+      document.getElementById("tI_6").innerHTML = y_6;
+      var c6_pos = document.getElementById("sp6_c");
+      //c6_pos.setAttribute('cx', 90);
+      c6_pos.setAttribute('cy', y_6_disp);
+  }
+  </script>
+</div>
+
+<div id="T7_slider" style = "float: left; width: 6.25%;">
+  <center><p>RAMP<br>07</p></center>
+  <input type="text" id="time_7" value="70" style="width:50%">
+  <input style="width:20px; height:300px" type="range" orient="vertical" id="temp_sP_7" min="32" max="1875" value="32">
+
+  <button onclick="myFunction_7()" style="width:80%">T7</button>
+
+  <p id="sP_7"></p>
+  <p id="tI_7"></p>
+
+  <script>
+  function myFunction_7() {
+      var x_7 = document.getElementById("temp_sP_7").value;
+      var y_7_disp = ~~(370 - (x_7 / 5.05));
+      var y_7 = document.getElementById("time_7").value;
+      document.getElementById("sP_7").innerHTML = x_7;
+      document.getElementById("tI_7").innerHTML = y_7;
+      var c7_pos = document.getElementById("sp7_c");
+      //c7_pos.setAttribute('cx', 90);
+      c7_pos.setAttribute('cy', y_7_disp);
+  }
+  </script>
+</div>
+
+<div id="T8_slider" style = "float: left; width: 6.25%;">
+  <center><p>RAMP<br>08</p></center>
+  <input type="text" id="time_8" value="80" style="width:50%">
+  <input style="width:20px; height:300px" type="range" orient="vertical" id="temp_sP_8" min="32" max="1875" value="32">
+
+  <button onclick="myFunction_8()" style="width:80%">T8</button>
+
+  <p id="sP_8"></p>
+  <p id="tI_8"></p>
+
+  <script>
+  function myFunction_8() {
+      var x_8 = document.getElementById("temp_sP_8").value;
+      var y_8_disp = ~~(370 - (x_8 / 5.05));
+      var y_8 = document.getElementById("time_8").value;
+      document.getElementById("sP_8").innerHTML = x_8;
+      document.getElementById("tI_8").innerHTML = y_8;
+      var c8_pos = document.getElementById("sp8_c");
+      //c8_pos.setAttribute('cx', 90);
+      c8_pos.setAttribute('cy', y_8_disp);
+  }
+  </script>
+</div>
+
+<div id="T9_slider" style = "float: left; width: 6.25%;">
+  <center><p>RAMP<br>09</p></center>
+  <input type="text" id="time_9" value="90" style="width:50%">
+  <input style="width:20px; height:300px" type="range" orient="vertical" id="temp_sP_9" min="32" max="1875" value="32">
+
+  <button onclick="myFunction_9()" style="width:80%">T9</button>
+
+  <p id="sP_9"></p>
+  <p id="tI_9"></p>
+
+  <script>
+  function myFunction_9() {
+      var x_9 = document.getElementById("temp_sP_9").value;
+      var y_9_disp = ~~(370 - (x_9 / 5.05));
+      var y_9 = document.getElementById("time_9").value;
+      document.getElementById("sP_9").innerHTML = x_9;
+      document.getElementById("tI_9").innerHTML = y_9;
+      var c9_pos = document.getElementById("sp9_c");
+      //c9_pos.setAttribute('cx', 90);
+      c9_pos.setAttribute('cy', y_9_disp);
+  }
+  </script>
+</div>
+
+<div id="T10_slider" style = "float: left; width: 6.25%;">
+  <center><p>RAMP<br>10</p></center>
+  <input type="text" id="time_10" value="100" style="width:50%">
+  <input style="width:20px; height:300px" type="range" orient="vertical" id="temp_sP_10" min="32" max="1875" value="32">
+
+  <button onclick="myFunction_10()" style="width:80%">T10</button>
+
+  <p id="sP_10"></p>
+  <p id="tI_10"></p>
+
+  <script>
+  function myFunction_10() {
+      var x_10 = document.getElementById("temp_sP_10").value;
+      var y_10_disp = ~~(370 - (x_10 / 5.05));
+      var y_10 = document.getElementById("time_10").value;
+      document.getElementById("sP_10").innerHTML = x_10;
+      document.getElementById("tI_10").innerHTML = y_10;
+      var c10_pos = document.getElementById("sp10_c");
+      //c10_pos.setAttribute('cx', 90);
+      c10_pos.setAttribute('cy', y_10_disp);
+  }
+  </script>
+</div>
+
+<div id="T11_slider" style = "float: left; width: 6.25%;">
+  <center><p>RAMP<br>11</p></center>
+  <input type="text" id="time_11" value="110" style="width:50%">
+  <input style="width:20px; height:300px" type="range" orient="vertical" id="temp_sP_11" min="32" max="1875" value="32">
+
+  <button onclick="myFunction_11()" style="width:80%">T11</button>
+
+  <p id="sP_11"></p>
+  <p id="tI_11"></p>
+
+  <script>
+  function myFunction_11() {
+      var x_11 = document.getElementById("temp_sP_11").value;
+      var y_11_disp = ~~(370 - (x_11 / 5.05));
+      var y_11 = document.getElementById("time_11").value;
+      document.getElementById("sP_11").innerHTML = x_11;
+      document.getElementById("tI_11").innerHTML = y_11;
+      var c11_pos = document.getElementById("sp11_c");
+      //c11_pos.setAttribute('cx', 90);
+      c11_pos.setAttribute('cy', y_11_disp);
+  }
+  </script>
+</div>
+
+<div id="T12_slider" style = "float: left; width: 6.25%;">
+  <center><p>RAMP<br>12</p></center>
+  <input type="text" id="time_12" value="120" style="width:50%">
+  <input style="width:20px; height:300px" type="range" orient="vertical" id="temp_sP_12" min="32" max="1875" value="32">
+
+  <button onclick="myFunction_12()" style="width:80%">T12</button>
+
+  <p id="sP_12"></p>
+  <p id="tI_12"></p>
+
+  <script>
+  function myFunction_12() {
+      var x_12 = document.getElementById("temp_sP_12").value;
+      var y_12_disp = ~~(370 - (x_12 / 5.05));
+      var y_12 = document.getElementById("time_12").value;
+      document.getElementById("sP_12").innerHTML = x_12;
+      document.getElementById("tI_12").innerHTML = y_12;
+      var c12_pos = document.getElementById("sp12_c");
+      //c12_pos.setAttribute('cx', 90);
+      c12_pos.setAttribute('cy', y_12_disp);
+  }
+  </script>
+</div>
+
+<div id="T13_slider" style = "float: left; width: 6.25%;">
+  <center><p>RAMP<br>13</p></center>
+  <input type="text" id="time_13" value="130" style="width:50%">
+  <input style="width:20px; height:300px" type="range" orient="vertical" id="temp_sP_13" min="32" max="1875" value="32">
+
+  <button onclick="myFunction_13()" style="width:80%">T13</button>
+
+  <p id="sP_13"></p>
+  <p id="tI_13"></p>
+
+  <script>
+  function myFunction_13() {
+      var x_13 = document.getElementById("temp_sP_13").value;
+      var y_13_disp = ~~(370 - (x_13 / 5.05));
+      var y_13 = document.getElementById("time_13").value;
+      document.getElementById("sP_13").innerHTML = x_13;
+      document.getElementById("tI_13").innerHTML = y_13;
+      var c13_pos = document.getElementById("sp13_c");
+      //c13_pos.setAttribute('cx', 90);
+      c13_pos.setAttribute('cy', y_13_disp);
+  }
+  </script>
+</div>
+
+<div id="T14_slider" style = "float: left; width: 6.25%;">
+  <center><p>RAMP<br>14</p></center>
+  <input type="text" id="time_14" value="140" style="width:50%">
+  <input style="width:20px; height:300px" type="range" orient="vertical" id="temp_sP_14" min="32" max="1875" value="32">
+
+  <button onclick="myFunction_14()" style="width:80%">T14</button>
+
+  <p id="sP_14"></p>
+  <p id="tI_14"></p>
+
+  <script>
+  function myFunction_14() {
+      var x_14 = document.getElementById("temp_sP_14").value;
+      var y_14_disp = ~~(370 - (x_14 / 5.05));
+      var y_14 = document.getElementById("time_14").value;
+      document.getElementById("sP_14").innerHTML = x_14;
+      document.getElementById("tI_14").innerHTML = y_14;
+      var c14_pos = document.getElementById("sp14_c");
+      //c14_pos.setAttribute('cx', 90);
+      c14_pos.setAttribute('cy', y_14_disp);
+  }
+  </script>
+</div>
+
+<div id="T15_slider" style = "float: left; width: 6.25%;">
+  <center><p>RAMP<br>15</p></center>
+  <input type="text" id="time_15" value="150" style="width:50%">
+  <input style="width:20px; height:300px" type="range" orient="vertical" id="temp_sP_15" min="32" max="1875" value="32">
+
+  <button onclick="myFunction_15()" style="width:80%">T15</button>
+
+  <p id="sP_15"></p>
+  <p id="tI_15"></p>
+
+  <script>
+  function myFunction_15() {
+      var x_15 = document.getElementById("temp_sP_15").value;
+      var y_15_disp = ~~(370 - (x_15 / 5.05));
+      var y_15 = document.getElementById("time_15").value;
+      document.getElementById("sP_15").innerHTML = x_15;
+      document.getElementById("tI_15").innerHTML = y_15;
+      var c15_pos = document.getElementById("sp15_c");
+      //c15_pos.setAttribute('cx', 90);
+      c15_pos.setAttribute('cy', y_15_disp);
+  }
+  </script>
+</div>
+
+<div id="T16_slider" style = "float: left; width: 6.25%;">
+  <center><p>RAMP<br>16</p></center>
+  <input type="text" id="time_16" value="160" style="width:50%">
+  <input style="width:20px; height:300px" type="range" orient="vertical" id="temp_sP_16" min="32" max="1875" value="32">
+
+  <button onclick="myFunction_16()" style="width:80%">T16</button>
+
+  <p id="sP_16"></p>
+  <p id="tI_16"></p>
+
+  <script>
+  function myFunction_16() {
+      var x_16 = document.getElementById("temp_sP_16").value;
+      var y_16_disp = ~~(370 - (x_16 / 5.05));
+      var y_16 = document.getElementById("time_16").value;
+      document.getElementById("sP_16").innerHTML = x_16;
+      document.getElementById("tI_16").innerHTML = y_16;
+      var c16_pos = document.getElementById("sp16_c");
+      //c16_pos.setAttribute('cx', 90);
+      c16_pos.setAttribute('cy', y_16_disp);
+  }
+  </script>
 </div>
 
 </body>
